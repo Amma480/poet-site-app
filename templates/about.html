@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="animated-title">Обо мне</h1>
+    <div class="about-text">
+        <p>Привет, я Сергей Матвеев, автор всех этих стихов 😎
+
+        </p>
+    </div>
+    <img src="{{ url_for('static', filename='img/pero_about.png') }}" alt="Перо и книга" class="poet-image">
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="animated-title">Стихи</h1>
+    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ Список стихов</button>
+    <div class="poems-container">
+        <div class="poems-list">
+            {% for poem, comments, likes in poems %}
+                <div class="poem" id="poem-{{ poem[0] }}">
+                    <h2>{{ poem[1] }}</h2>
+                    <p>{{ poem[2] | replace('\n', '<br>') | safe }}</p>
+                    <div class="poem-actions">
+                        <span>Лайков: {{ likes }} | Просмотров: {{ poem[5] }}</span>
+                        <form method="POST" style="display: inline;">
+                            <input type="hidden" name="poem_id" value="{{ poem[0] }}">
+                            {% if poem_likes[poem[0]] %}
+                                <span>Вы лайкнули</span>
+                            {% else %}
+                                <button type="submit" name="action" value="like" class="like-button"></button>
+                            {% endif %}
+                        </form>
+                        {% if session.role in ['author', 'admin'] %}
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="poem_id" value="{{ poem[0] }}">
+                                <button type="submit" name="action" value="move_up">↑</button>
+                                <button type="submit" name="action" value="move_down">↓</button>
+                                <a href="{{ url_for('edit_poem', poem_id=poem[0]) }}">Редактировать</a>
+                                <button type="submit" name="action" value="delete_poem">Удалить</button>
+                                <button type="submit" name="action" value="clear_likes">Очистить лайки</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <div class="comments">
+                        <h3>Комментарии:</h3>
+                        {% for comment in comments %}
+                            <div class="comment">
+                                <p><strong>{{ comment[1] }}</strong>: {{ comment[2] }}</p>
+                                {% if session.role in ['author', 'admin'] %}
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="poem_id" value="{{ poem[0] }}">
+                                        <input type="hidden" name="comment_id" value="{{ comment[0] }}">
+                                        <button type="submit" name="action" value="delete_comment">Удалить</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <form method="POST">
+                            <input type="hidden" name="poem_id" value="{{ poem[0] }}">
+                            <input type="text" name="username" placeholder="Ваше имя" required>
+                            <textarea name="comment" placeholder="Ваш комментарий" required></textarea>
+                            <button type="submit" name="action" value="comment">Добавить комментарий</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="sidebar">
+            <h3>Список стихов</h3>
+            <ul>
+                {% for poem in poems %}
+                    <li><a href="#poem-{{ poem[0][0] }}">{{ poem[0][1] }}</a></li>
+                {% endfor %}
+            </ul>
+            <h3>Аудио</h3>
+            <ul>
+                {% for poem in poems %}
+                    {% if poem[0][4] %}
+                        <li><a href="{{ poem[0][4] }}" target="_blank">{{ poem[0][1] }} (Аудио)</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('visible');
+        }
+    </script>
+{% endblock %}

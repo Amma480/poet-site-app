@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="animated-title">Обратная связь</h1>
+    <form method="POST">
+        <label for="username">Имя:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="message">Сообщение:</label>
+        <textarea id="message" name="message" required></textarea>
+        <button type="submit" name="action" value="submit_feedback">Отправить</button>
+    </form>
+    {% if session.role in ['author', 'admin'] %}
+        <h2>Для автора</h2>
+        <form method="POST">
+            <button type="submit" name="action" value="clear_feedback">Очистить сообщения</button>
+        </form>
+        {% if messages %}
+            <div class="feedback-messages">
+                {% for message in messages %}
+                    <div class="feedback">
+                        <p><strong>{{ message[0] }}</strong>: {{ message[1] }}</p>
+                        <p><small>{{ message[2] }}</small></p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

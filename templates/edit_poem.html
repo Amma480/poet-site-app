@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="animated-title">Редактировать стих</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" value="{{ title }}" required>
+        <label for="content">Текст стиха:</label>
+        <textarea id="content" name="content" required>{{ content }}</textarea>
+        <label for={% extends 'base.html' %}
+{% block content %}
+    <h1 class="animated-title">Редактировать стих</h1>
+    <form method="POST">
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" value="{{ title }}" required>
+        <label for="content">Текст стиха:</label>
+        <textarea id="content" name="content" required>{{ content }}</textarea>
+        <label for="audio_url">Ссылка на аудио (необязательно):</label>
+        <input type="url" id="audio_url" name="audio_url" value="{{ audio_url or '' }}" placeholder="https://...">
+        <button type="submit">Сохранить</button>
+    </form>
+{% endblock %}"audio">Аудио (MP3):</label>
+        <input type="file" id="audio" name="audio" accept=".mp3">
+        <button type="submit">Сохранить</button>
+    </form>
+{% endblock %}

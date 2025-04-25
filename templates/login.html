@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="animated-title">Авторизация</h1>
+    <form method="POST">
+        <label for="username">Пользователь:</label>
+        <select id="username" name="username" required>
+            <option value="author">Автор</option>
+            <option value="admin">Админ</option>
+        </select>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Войти</button>
+    </form>
+{% endblock %}

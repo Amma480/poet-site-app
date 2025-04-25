@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт поэта</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}">Главная</a>
+        <a href="{{ url_for('about') }}">Обо мне</a>
+        <a href="{{ url_for('poems') }}">Стихи</a>
+        <a href="{{ url_for('news') }}">Новости</a>
+        {% if session.username and session.role in ['author', 'admin'] %}
+            <a href="{{ url_for('add_poem') }}">Добавить стих</a>
+        {% endif %}
+        <a href="{{ url_for('feedback') }}">Обратная связь</a>
+        {% if session.username %}
+            <a href="{{ url_for('change_password') }}">Сменить пароль</a>
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Войти</a>
+        {% endif %}
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+    <button id="scroll-top" onclick="scrollToTop()">↑</button>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
